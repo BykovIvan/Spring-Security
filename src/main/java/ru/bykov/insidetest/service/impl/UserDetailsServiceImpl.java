@@ -1,12 +1,14 @@
 package ru.bykov.insidetest.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.bykov.insidetest.model.User;
 import ru.bykov.insidetest.repository.UserRepository;
+
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -16,9 +18,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository
-                .findByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username " + username));
-        return UserDetailsImpl.build(user);
+        if ("javainuse".equals(username)) {
+            return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+                    new ArrayList<>());
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
     }
+
 }

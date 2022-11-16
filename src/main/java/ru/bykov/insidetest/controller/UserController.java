@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public String create(@Valid @RequestBody UserDto userSto) {
+    public String create(@Valid @RequestBody User userSto) {
         log.info("Получен запрос к эндпоинту /auth/token. Метод POST");
         return userService.create(userSto);
     }
