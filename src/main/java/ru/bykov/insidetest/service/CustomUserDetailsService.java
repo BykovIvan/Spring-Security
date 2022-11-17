@@ -18,20 +18,18 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-
     private final UserRepository userRepository;
 
-
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        User user = userRepository.findByName(name)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email:" + usernameOrEmail));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                        new UsernameNotFoundException("User not found with name:" + name));
+        return new org.springframework.security.core.userdetails.User(user.getName(),
                 user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection< ? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles){
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().toString())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }

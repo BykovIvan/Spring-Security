@@ -2,7 +2,6 @@ package ru.bykov.insidetest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.bykov.insidetest.utils.ERole;
 import ru.bykov.insidetest.model.Role;
 
 import java.util.Optional;

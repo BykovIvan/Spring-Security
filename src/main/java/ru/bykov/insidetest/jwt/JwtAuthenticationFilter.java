@@ -1,7 +1,5 @@
 package ru.bykov.insidetest.jwt;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthenticationFilter  extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -32,7 +30,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         // get JWT (token) from http request
         String token = getJWTFromRequest(request);
         // validate token
-        if(StringUtils.hasText(token) && tokenProvider.validateToken(token)){
+        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
             // get username from token
             String username = tokenProvider.getUsernameFromJWT(token);
             // load user associated with token
@@ -49,9 +47,9 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
     }
 
     // Bearer <accessToken>
-    private String getJWTFromRequest(HttpServletRequest request){
+    private String getJWTFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer_")){
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer_")) {
             return bearerToken.substring(7, bearerToken.length());
         }
         return null;

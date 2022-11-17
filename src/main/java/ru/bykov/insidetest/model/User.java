@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username"}),
+        @UniqueConstraint(columnNames = {"name"}),
         @UniqueConstraint(columnNames = {"email"})
 })
 public class User {
