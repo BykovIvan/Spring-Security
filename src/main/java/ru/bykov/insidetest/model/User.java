@@ -18,24 +18,22 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "users",
-        uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username"}),
+        @UniqueConstraint(columnNames = {"email"})
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotNull
-    @NotBlank
-    @Size(min = 1, max = 64)
+    private long id;
     private String name;
-    @NotNull
-    @NotBlank
-    @Size(min = 1, max = 64)
+    private String username;
+    private String email;
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 }

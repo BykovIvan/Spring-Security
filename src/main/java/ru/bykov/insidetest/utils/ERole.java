@@ -1,4 +1,4 @@
-package ru.bykov.insidetest.model;
+package ru.bykov.insidetest.utils;
 
 public enum ERole {
     ROLE_USER,

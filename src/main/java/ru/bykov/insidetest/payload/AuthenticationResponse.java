@@ -1,4 +1,4 @@
-package ru.bykov.insidetest.model;
+package ru.bykov.insidetest.payload;
 
 import lombok.Data;
 
