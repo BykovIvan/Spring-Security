@@ -3,7 +3,6 @@ package ru.bykov.insidetest.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.bykov.insidetest.jwt.JwtAuthenticationEntryPoint;
 import ru.bykov.insidetest.jwt.JwtAuthenticationFilter;
+import ru.bykov.insidetest.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests((authorize) -> authorize
-//                        .antMatchers(HttpMethod.GET, "/message").permitAll()
+//                        .antMatchers("/message").hasAnyRole("USER")
                         .antMatchers("/auth/**").permitAll()
 //                        .antMatchers("/message").hasRole("USER")
 //                        .antMatchers("/swagger-ui/**").permitAll()
