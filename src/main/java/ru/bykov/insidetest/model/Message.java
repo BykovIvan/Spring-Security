@@ -23,14 +23,16 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     @NotNull
-    @NotBlank
-    private String name;
+    private User user;
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1024)
     private String message;
     @JsonIgnore
+    @Column(name = "date_of_create")
     private LocalDateTime dateOfCreate;
 
 }

@@ -46,7 +46,12 @@ public class UserServiceImpl implements UserService {
         user.setUsername(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-        Role roles = roleRepository.findByName("ROLE_USER").get();
+        Role roles;
+        if (signUpDto.getRole().isEmpty()){
+            roles = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Нет такой роли в таблице"));
+        } else {
+            roles = roleRepository.findByName(signUpDto.getRole()).orElseThrow(() -> new RuntimeException("Нет такой роли в таблице"));
+        }
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);

@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  ewm-service:
+    build: ./
+    container_name: inside-test
+    ports:
+      - "9090:9090"
+    depends_on:
+      - ewm-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/insidetest
+      - SPRING_DATASOURCE_USER=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+
+  ewm-db:
+    image: postgres:14-alpine
+    container_name: postgresql-insidetest
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_DB=insidetest
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+
+
+
+
+
