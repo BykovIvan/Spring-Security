@@ -5,15 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
-import ru.bykov.insidetest.model.Message;
-import ru.bykov.insidetest.model.User;
-import ru.bykov.insidetest.repository.MessageRepository;
-import ru.bykov.insidetest.utils.FromSizeSortPageable;
-
-import java.util.HashSet;
-import java.util.List;
+import ru.bykov.insidetest.model.Role;
+import ru.bykov.insidetest.repository.RoleRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
@@ -25,31 +19,21 @@ import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
         "logging.level.org.hibernate.type.BasicTypeRegistry=warn",
         "spring.main.banner-mode=off"})
 @AutoConfigureTestDatabase(connection = H2, replace = AutoConfigureTestDatabase.Replace.NONE)
-class JpaMessageEMTests {
+public class JpaRoleEMTests {
 
     @Autowired
     private TestEntityManager entityManager;
-
     @Autowired
-    private MessageRepository repository;
+    RoleRepository repository;
 
     @Test
     void findByNameTest() {
-        User user = new User();
-        user.setName("ivan");
-        user.setPassword("password");
-        user.setRoles(new HashSet<>());
-        user.setEmail("ivan@yandex.ru");
-        entityManager.persist(user);
-        entityManager.flush();
-        Message message = new Message();
-        message.setUser(user);
-        message.setMessage("Hello world");
-        entityManager.persist(message);
+        Role role = new Role();
+        role.setName("ROLE_ADMIN2");
+        entityManager.persist(role);
         entityManager.flush();
 
-        List<Message> messageGet = repository.findByNameLastMessageByLimitOfCount(user.getName(), FromSizeSortPageable.of(0, 10, Sort.by(Sort.Direction.DESC, "dateOfCreate")));
-        assertThat(messageGet.get(0).getUser().getName()).isEqualTo(user.getName());
+        Role roleGet = repository.findByName("ROLE_ADMIN2").get();
+        assertThat(roleGet.getName()).isEqualTo("ROLE_ADMIN2");
     }
-
 }

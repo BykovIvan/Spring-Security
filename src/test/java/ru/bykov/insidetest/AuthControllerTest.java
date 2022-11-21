@@ -9,14 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.bykov.insidetest.model.Role;
 import ru.bykov.insidetest.model.dto.MessageDto;
 import ru.bykov.insidetest.model.dto.JWTAuthResponse;
 import ru.bykov.insidetest.model.dto.LoginDto;
 import ru.bykov.insidetest.model.dto.SignUpDto;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -53,8 +51,7 @@ class AuthControllerTest {
         SignUpDto signUpDto = new SignUpDto();
         signUpDto.setName("ivan");
         signUpDto.setPassword("password");
-        signUpDto.setUsername("ivan");
-        signUpDto.setRole(new ArrayList<>());
+        signUpDto.setRoles(new ArrayList<>());
         signUpDto.setEmail("ivan@yandex.ru");
         String body = mapper.writeValueAsString(signUpDto);
         mvc.perform(post("/auth/signup").content(body).contentType(MediaType.APPLICATION_JSON))

@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.bykov.insidetest.jwt.JwtAuthenticationEntryPoint;
 import ru.bykov.insidetest.jwt.JwtAuthenticationFilter;
-import ru.bykov.insidetest.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -45,13 +44,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests((authorize) -> authorize
-//                        .antMatchers("/message").hasAnyRole("USER")
                         .antMatchers("/auth/**").permitAll()
-//                        .antMatchers("/message").hasRole("USER")
-//                        .antMatchers("/swagger-ui/**").permitAll()
-//                        .antMatchers("/swagger-resources/**").permitAll()
-//                        .antMatchers("/swagger-ui.html").permitAll()
-//                        .antMatchers("/webjars/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 );

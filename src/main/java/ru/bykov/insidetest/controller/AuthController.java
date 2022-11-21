@@ -12,6 +12,8 @@ import ru.bykov.insidetest.model.dto.LoginDto;
 import ru.bykov.insidetest.model.dto.SignUpDto;
 import ru.bykov.insidetest.service.UserService;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -20,13 +22,13 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JWTAuthResponse> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
         log.info("Получен доступ к энпоинту /auth/signin, метод POST, аутентификация пользователя");
         return userService.authenticateUser(loginDto);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpDto signUpDto) {
         log.info("Получен доступ к энпоинту /auth/signup, метод POST, регистрация пользователя");
         return userService.createUser(signUpDto);
     }

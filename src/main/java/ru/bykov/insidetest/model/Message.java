@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 
@@ -25,11 +22,7 @@ public class Message {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotNull
     private User user;
-    @NotNull
-    @NotBlank
-    @Size(min = 1, max = 1024)
     private String message;
     @JsonIgnore
     @Column(name = "date_of_create")

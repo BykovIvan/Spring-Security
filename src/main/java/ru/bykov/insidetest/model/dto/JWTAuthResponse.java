@@ -9,6 +9,7 @@ import lombok.Data;
 @Builder
 public class JWTAuthResponse {
     private String token;
+
     @JsonCreator
     JWTAuthResponse(@JsonProperty("token") String token) {
         this.token = token;

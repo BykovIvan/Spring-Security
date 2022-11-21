@@ -19,7 +19,8 @@ import ru.bykov.insidetest.repository.RoleRepository;
 import ru.bykov.insidetest.repository.UserRepository;
 import ru.bykov.insidetest.service.UserService;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,28 +31,28 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
+
     @Override
     public ResponseEntity<?> createUser(SignUpDto signUpDto) {
         // add check for username exists in a DB
-        if(userRepository.existsByUsername(signUpDto.getUsername())){
-            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+        if (userRepository.existsByName(signUpDto.getName())) {
+            return new ResponseEntity<>("Name is already taken!", HttpStatus.BAD_REQUEST);
         }
         // add check for email exists in DB
-        if(userRepository.existsByEmail(signUpDto.getEmail())){
+        if (userRepository.existsByEmail(signUpDto.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
         // create user object
         User user = new User();
         user.setName(signUpDto.getName());
-        user.setUsername(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
         Set<Role> roles = new HashSet<>();
-        if (signUpDto.getRole().isEmpty()){
+        if (signUpDto.getRoles() == null || signUpDto.getRoles().isEmpty() ) {
             roles.add(roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Нет такой роли в таблице")));
         } else {
-            for (String name : signUpDto.getRole() ) {
-                 roles.add(roleRepository.findByName(name).orElseThrow(() -> new RuntimeException("Нет такой роли в таблице")));
+            for (String name : signUpDto.getRoles()) {
+                roles.add(roleRepository.findByName(name).orElseThrow(() -> new RuntimeException("Нет такой роли в таблице")));
             }
         }
         user.setRoles(roles);
