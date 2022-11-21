@@ -27,7 +27,7 @@ http://localhost:9090/auth/signin
 ## Для добавления сообщения пользователем ##
 http://localhost:9090/message
 <br/>Метод POST
-Headers "**Authorization**": "**Bearer_**" + **token**
+<br/>Headers "**Authorization**": "**Bearer_**" + **token**
 ### json ###
 {
 "name": "ivan2",
@@ -37,7 +37,7 @@ Headers "**Authorization**": "**Bearer_**" + **token**
 ## Для получения истории сообщений: ##
 http://localhost:9090/message
 <br/>Метод GET
-Headers "**Authorization**": "**Bearer_**" + **token**
+<br/>Headers "**Authorization**": "**Bearer_**" + **token**
 ### json ###
 {
 "name": "ivan2",
@@ -45,6 +45,6 @@ Headers "**Authorization**": "**Bearer_**" + **token**
 }
 ***
 ## Для запуска приложения и бд в Docker необходимо необходимо: ##
-*mvn clean package
-*docker-compose up
+-mvn clean package
+<br/>-docker-compose up
 
