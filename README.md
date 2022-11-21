@@ -6,7 +6,7 @@
 # EndPoints: 
 ## Для регистрации: ##
 http://localhost:9090/auth/signup
-<br/>Метод POST
+<br/>Метод **POST**
 ### json ###
 {
 "name": "ivan2",
@@ -16,7 +16,7 @@ http://localhost:9090/auth/signup
 ***
 ## Для авторизации ##
 http://localhost:9090/auth/signin
-<br/>Метод POST
+<br/>Метод **POST**
 ### json ###
 {
 "name": "ivan2",
@@ -26,7 +26,7 @@ http://localhost:9090/auth/signin
 ***
 ## Для добавления сообщения пользователем ##
 http://localhost:9090/message
-<br/>Метод POST
+<br/>Метод **POST**
 <br/>Headers "**Authorization**": "**Bearer_**" + **token**
 ### json ###
 {
@@ -36,7 +36,7 @@ http://localhost:9090/message
 ***
 ## Для получения истории сообщений: ##
 http://localhost:9090/message
-<br/>Метод GET
+<br/>Метод **GET**
 <br/>Headers "**Authorization**": "**Bearer_**" + **token**
 ### json ###
 {

@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "fb831a52-c207-40b1-b856-1e61113186d9",
+		"name": "insidetest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20869815"
+	},
+	"item": [
+		{
+			"name": "singin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ivan2\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "singup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ivan2\",\r\n    \"email\": \"ivan2@yandex.ru\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add message",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer_eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdmFuMiIsImlhdCI6MTY2ODcxODMyNiwiZXhwIjoxNjY5MzIzMTI2fQ.Neeb-KIjxvoI2r9UXQ_n_O1M-dy-XCDuEveuq4H0n8O0hMa9_U3D_O37Gytwx9y_785hjD_aF7OLsox4T9jq8A",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ivan2\",\r\n    \"message\": \"message from user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/message",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"message"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get message by count",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer_eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdmFuMiIsImlhdCI6MTY2ODc1Nzk0NCwiZXhwIjoxNjY5MzYyNzQ0fQ.uQT1RSOmL60srHKYVTgmE4ejbQKFSIcjEyVqmlSvjls-lQgCovUVZPy45ZQVtgA7UsK9QwMg9abTbois0lQivw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ivan2\",\r\n    \"message\": \"history 10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/message",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"message"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
