@@ -4,47 +4,47 @@
 Приложение работает на порту **9090**. 
 ***
 # EndPoints: 
-# # Для регистрации:
+## Для регистрации: ##
 http://localhost:9090/auth/signup
 <br/>Метод POST
-# # # json
+### json ###
 {
 "name": "ivan2",
 "email": "ivan2@yandex.ru",
 "password": "password"
 }
 ***
-# # Для авторизации
+## Для авторизации ##
 http://localhost:9090/auth/signin
 <br/>Метод POST
-# # # json
+### json ###
 {
 "name": "ivan2",
 "password": "password"
 }
 <br/>В ответе придет сформированный token. Роль по умолчанию USER.
 ***
-<br/>Для добавления сообщения пользователем
+## Для добавления сообщения пользователем ##
 http://localhost:9090/message
 <br/>Метод POST
 Headers "**Authorization**": "**Bearer_**" + **token**
-# # # json
+### json ###
 {
 "name": "ivan2",
 "message": "message from user"
 }
 ***
-<br/>Для получения истории сообщений:
+## Для получения истории сообщений: ##
 http://localhost:9090/message
 <br/>Метод GET
 Headers "**Authorization**": "**Bearer_**" + **token**
-# # # json
+### json ###
 {
 "name": "ivan2",
 "message": "history 10"
 }
 ***
-<br/>Для запуска приложения и бд в Docker необходимо необходимо:
+## Для запуска приложения и бд в Docker необходимо необходимо: ##
 *mvn clean package
 *docker-compose up
 
