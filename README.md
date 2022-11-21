@@ -7,7 +7,7 @@
 # # Для регистрации:
 http://localhost:9090/auth/signup
 <br/>Метод POST
-# # json
+# # # json
 {
 "name": "ivan2",
 "email": "ivan2@yandex.ru",
@@ -17,7 +17,7 @@ http://localhost:9090/auth/signup
 # # Для авторизации
 http://localhost:9090/auth/signin
 <br/>Метод POST
-# # json
+# # # json
 {
 "name": "ivan2",
 "password": "password"
@@ -28,7 +28,7 @@ http://localhost:9090/auth/signin
 http://localhost:9090/message
 <br/>Метод POST
 Headers "**Authorization**": "**Bearer_**" + **token**
-# # json
+# # # json
 {
 "name": "ivan2",
 "message": "message from user"
@@ -38,6 +38,7 @@ Headers "**Authorization**": "**Bearer_**" + **token**
 http://localhost:9090/message
 <br/>Метод GET
 Headers "**Authorization**": "**Bearer_**" + **token**
+# # # json
 {
 "name": "ivan2",
 "message": "history 10"
