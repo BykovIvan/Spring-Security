@@ -1,9 +1,9 @@
 package ru.bykov.insidetest.service;
 
 import org.springframework.http.ResponseEntity;
-import ru.bykov.insidetest.payload.JWTAuthResponse;
-import ru.bykov.insidetest.payload.LoginDto;
-import ru.bykov.insidetest.payload.SignUpDto;
+import ru.bykov.insidetest.model.dto.JWTAuthResponse;
+import ru.bykov.insidetest.model.dto.LoginDto;
+import ru.bykov.insidetest.model.dto.SignUpDto;
 
 public interface UserService {
 

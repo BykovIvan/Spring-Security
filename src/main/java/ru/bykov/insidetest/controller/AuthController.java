@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bykov.insidetest.payload.JWTAuthResponse;
-import ru.bykov.insidetest.payload.LoginDto;
-import ru.bykov.insidetest.payload.SignUpDto;
+import ru.bykov.insidetest.model.dto.JWTAuthResponse;
+import ru.bykov.insidetest.model.dto.LoginDto;
+import ru.bykov.insidetest.model.dto.SignUpDto;
 import ru.bykov.insidetest.service.UserService;
 
 @RestController

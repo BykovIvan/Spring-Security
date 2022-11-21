@@ -4,33 +4,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.bykov.insidetest.config.SecurityConfig;
-import ru.bykov.insidetest.controller.AuthController;
-import ru.bykov.insidetest.controller.MessageController;
-import ru.bykov.insidetest.model.Message;
-import ru.bykov.insidetest.model.User;
+import ru.bykov.insidetest.model.Role;
 import ru.bykov.insidetest.model.dto.MessageDto;
-import ru.bykov.insidetest.payload.LoginDto;
-import ru.bykov.insidetest.payload.SignUpDto;
-import ru.bykov.insidetest.repository.UserRepository;
-import ru.bykov.insidetest.service.CustomUserDetailsService;
-import ru.bykov.insidetest.service.UserService;
-import ru.bykov.insidetest.service.impl.UserServiceImpl;
+import ru.bykov.insidetest.model.dto.JWTAuthResponse;
+import ru.bykov.insidetest.model.dto.LoginDto;
+import ru.bykov.insidetest.model.dto.SignUpDto;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -43,35 +35,26 @@ class AuthControllerTest {
     @Autowired
     ObjectMapper mapper;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
-    void rootWhenUnauthenticatedThen401() throws Exception {
+    void rootWhenNoAuthenticated() throws Exception {
         mvc.perform(get("/message"))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(post("/message"))
                 .andExpect(status().isUnauthorized());
     }
 
-
-
     @Test
-    void createUserResponseOKTest() throws Exception {
+    @WithMockUser(username="ivan", roles={"USER","ADMIN"})
+    void AuthenticatedUserWithMessage() throws Exception {
+
         SignUpDto signUpDto = new SignUpDto();
         signUpDto.setName("ivan");
         signUpDto.setPassword("password");
         signUpDto.setUsername("ivan");
-        signUpDto.setRole("");
-        signUpDto.setEmail("ivan@yandex.ru");
-        String body = mapper.writeValueAsString(signUpDto);
-        mvc.perform(post("/auth/signup").content(body).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-
-    @Test
-    void rootWhenAuthenticatedThenSaysHelloUser() throws Exception {
-        SignUpDto signUpDto = new SignUpDto();
-        signUpDto.setName("ivan");
-        signUpDto.setPassword("password");
-        signUpDto.setUsername("ivan");
-        signUpDto.setRole("");
+        signUpDto.setRole(new ArrayList<>());
         signUpDto.setEmail("ivan@yandex.ru");
         String body = mapper.writeValueAsString(signUpDto);
         mvc.perform(post("/auth/signup").content(body).contentType(MediaType.APPLICATION_JSON))
@@ -83,24 +66,46 @@ class AuthControllerTest {
         MvcResult result = mvc.perform(post("/auth/signin").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
+        String tokenObjStr = result.getResponse().getContentAsString();
 
-        String token = result.getResponse().getContentAsString();
+        JWTAuthResponse tokenJwt = objectMapper.readValue(tokenObjStr, JWTAuthResponse.class);
 
         MessageDto messageDto = new MessageDto();
         messageDto.setName(signUpDto.getName());
-        messageDto.setMessage("Hello?");
+        messageDto.setMessage("history 10");
+        String body2 = mapper.writeValueAsString(messageDto);
         mvc.perform(get("/message")
-                        .content(body)
-
+                        .content(body2)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer_" + token))
-                .andExpect(status().isOk());
+                        .header("Authorization", "Bearer_" + tokenJwt.getToken()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
 
+        MessageDto messageDtoNew = new MessageDto();
+        messageDtoNew.setName(signUpDto.getName());
+        messageDtoNew.setMessage("Hello Ivan");
+        String body3 = mapper.writeValueAsString(messageDtoNew);
+        mvc.perform(post("/message")
+                        .content(body3)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer_" + tokenJwt.getToken()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name", is(messageDtoNew.getName()), String.class))
+                .andExpect(jsonPath("$.message", is(messageDtoNew.getMessage()), String.class));
+
+
+        MessageDto messageDtoGet = new MessageDto();
+        messageDtoGet.setName(signUpDto.getName());
+        messageDtoGet.setMessage("history 10");
+        String body4 = mapper.writeValueAsString(messageDtoGet);
+        mvc.perform(get("/message")
+                        .content(body4)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer_" + tokenJwt.getToken()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].name", is(messageDtoNew.getName()), String.class))
+                .andExpect(jsonPath("$[0].message", is(messageDtoNew.getMessage()), String.class));
     }
 
-    @Test
-    @WithMockUser
-    void rootWithMockUserStatusIsOK() throws Exception {
-        this.mvc.perform(get("/")).andExpect(status().isOk());
-    }
 }

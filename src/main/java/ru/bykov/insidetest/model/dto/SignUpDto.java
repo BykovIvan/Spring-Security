@@ -1,6 +1,8 @@
-package ru.bykov.insidetest.payload;
+package ru.bykov.insidetest.model.dto;
 
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class SignUpDto {
@@ -8,5 +10,5 @@ public class SignUpDto {
     private String username;
     private String email;
     private String password;
-    private String role;
+    private List<String> role;
 }

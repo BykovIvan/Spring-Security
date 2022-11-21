@@ -3,7 +3,6 @@ package ru.bykov.insidetest.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.bykov.insidetest.exception.ResourceNotFoundException;
 import ru.bykov.insidetest.model.Message;
 import ru.bykov.insidetest.model.dto.MessageDto;
 import ru.bykov.insidetest.repository.MessageRepository;
@@ -25,7 +24,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageDto createByUser(MessageDto messageDto) {
-        if (!userRepository.existsByName(messageDto.getName())) throw new RuntimeException("Данного пользователя не существует");
+        if (!userRepository.existsByName(messageDto.getName()))
+            throw new RuntimeException("Данного пользователя не существует");
         Message newMessage = mapToEntity(messageDto);
         Message message = messageRepository.save(newMessage);
         return mapToDto(message);
@@ -33,8 +33,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageDto> getMessagesByUser(MessageDto messageDto) {
-        if (!userRepository.existsByName(messageDto.getName())) throw new RuntimeException("Данного пользователя не существует");
-        if (messageDto.getMessage().startsWith("history")){
+        if (!userRepository.existsByName(messageDto.getName()))
+            throw new RuntimeException("Данного пользователя не существует");
+        if (messageDto.getMessage().startsWith("history ")) {
             int count = Integer.parseInt(messageDto.getMessage().split(" ")[1]);
             List<Message> listOfMessage = messageRepository.findByNameLastMessageByLimitOfCount(messageDto.getName(), FromSizeSortPageable.of(0, count, Sort.by(Sort.Direction.DESC, "dateOfCreate")));
             return listOfMessage.stream().map(this::mapToDto).collect(Collectors.toList());

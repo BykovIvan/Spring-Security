@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import ru.bykov.insidetest.jwt.JwtTokenProvider;
 import ru.bykov.insidetest.model.Role;
 import ru.bykov.insidetest.model.User;
-import ru.bykov.insidetest.payload.JWTAuthResponse;
-import ru.bykov.insidetest.payload.LoginDto;
-import ru.bykov.insidetest.payload.SignUpDto;
+import ru.bykov.insidetest.model.dto.JWTAuthResponse;
+import ru.bykov.insidetest.model.dto.LoginDto;
+import ru.bykov.insidetest.model.dto.SignUpDto;
 import ru.bykov.insidetest.repository.RoleRepository;
 import ru.bykov.insidetest.repository.UserRepository;
 import ru.bykov.insidetest.service.UserService;
 
-import java.util.Collections;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,13 +46,15 @@ public class UserServiceImpl implements UserService {
         user.setUsername(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-        Role roles;
+        Set<Role> roles = new HashSet<>();
         if (signUpDto.getRole().isEmpty()){
-            roles = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Нет такой роли в таблице"));
+            roles.add(roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Нет такой роли в таблице")));
         } else {
-            roles = roleRepository.findByName(signUpDto.getRole()).orElseThrow(() -> new RuntimeException("Нет такой роли в таблице"));
+            for (String name : signUpDto.getRole() ) {
+                 roles.add(roleRepository.findByName(name).orElseThrow(() -> new RuntimeException("Нет такой роли в таблице")));
+            }
         }
-        user.setRoles(Collections.singleton(roles));
+        user.setRoles(roles);
         userRepository.save(user);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
@@ -64,6 +66,6 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // get token form tokenProvider
         String token = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(token));
+        return ResponseEntity.ok(JWTAuthResponse.builder().token(token).build());
     }
 }
