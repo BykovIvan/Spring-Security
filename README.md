@@ -1,5 +1,6 @@
-# insidetest
-Приложение содержит авторизацию по jwt. Так же добавлен доступ по ролям. 
+# Inside-Test
+Приложение содержит авторизацию по jwt. Так же добавлен доступ по ролям.
+<br/> Ссылка на DockerHub https://hub.docker.com/repository/docker/bykovivan/inside-test
 ***
 Приложение работает на порту **9090**. 
 ***
@@ -7,23 +8,29 @@
 ## Для регистрации: ##
 http://localhost:9090/auth/signup
 <br/>Метод **POST**
-### json ###
+### json: ###
 {
 "name": "ivan2",
 "email": "ivan2@yandex.ru",
 "password": "password"
 }
+### **curl**:
+curl -d '{"name":"ivan2", "email":"ivan2@yandex.ru", "password":"password"}' -H "Content-Type: application/json" -X POST http://localhost:9090/auth/signup
 ***
+
 ## Для авторизации ##
 http://localhost:9090/auth/signin
 <br/>Метод **POST**
-### json ###
+### json: ###
 {
 "name": "ivan2",
 "password": "password"
 }
 <br/>В ответе придет сформированный token. Роль по умолчанию USER.
+### **curl**:
+curl -d '{"name":"ivan2", "password":"password"}' -H "Content-Type: application/json" -X POST http://localhost:9090/auth/signin
 ***
+
 ## Для добавления сообщения пользователем ##
 http://localhost:9090/message
 <br/>Метод **POST**
@@ -33,7 +40,10 @@ http://localhost:9090/message
 "name": "ivan2",
 "message": "message from user"
 }
+### **curl**:
+curl -d '{"name":"ivan2", "message":"message from user"}' -H "Content-Type: application/json" -H "Authorization: Bearer_ + **token**" -X POST http://localhost:9090/message
 ***
+
 ## Для получения истории сообщений: ##
 http://localhost:9090/message
 <br/>Метод **GET**
@@ -43,8 +53,13 @@ http://localhost:9090/message
 "name": "ivan2",
 "message": "history 10"
 }
+### **curl**:
+curl -d '{"name":"ivan2", "message":"history 10"}' -H "Content-Type: application/json" -H "Authorization: Bearer_ + **token**" -X GET http://localhost:9090/message
 ***
+
 ## Для запуска приложения и бд в Docker необходимо необходимо: ##
 -mvn clean package
 <br/>-docker-compose up
+## cerl запросы: ##
+curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
 
