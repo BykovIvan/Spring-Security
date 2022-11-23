@@ -57,9 +57,7 @@ http://localhost:9090/message
 curl -d '{"name":"ivan2", "message":"history 10"}' -H "Content-Type: application/json" -H "Authorization: Bearer_ + **token**" -X GET http://localhost:9090/message
 ***
 
-## Для запуска приложения и бд в Docker необходимо необходимо: ##
+## Для запуска приложения и бд в Docker необходимо: ##
 -mvn clean package
 <br/>-docker-compose up
-## cerl запросы: ##
-curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
 
