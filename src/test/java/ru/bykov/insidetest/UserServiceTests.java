@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import ru.bykov.insidetest.model.Role;
 import ru.bykov.insidetest.model.User;
 import ru.bykov.insidetest.model.dto.JWTAuthResponse;
@@ -16,6 +17,7 @@ import ru.bykov.insidetest.model.dto.SignUpDto;
 import ru.bykov.insidetest.repository.RoleRepository;
 import ru.bykov.insidetest.repository.UserRepository;
 import ru.bykov.insidetest.service.UserService;
+import ru.bykov.insidetest.service.impl.UserServiceImpl;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -27,11 +29,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(
         properties = "db.name=test",
         webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserServiceTests {
+@ActiveProfiles("test")
+class UserServiceTests {
 
     @InjectMocks
-    private final UserService service;
+    @Autowired
+    private UserServiceImpl service;
     @Mock
     private RoleRepository roleRepository;
 

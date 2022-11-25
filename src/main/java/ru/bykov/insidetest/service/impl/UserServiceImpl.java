@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
 
+
     @Override
     public ResponseEntity<?> createUser(SignUpDto signUpDto) {
         // add check for username exists in a DB
